@@ -15,7 +15,8 @@ mixin slide(image)
     - attributes.class = []
 
   if image
-    - attributes.class.push('cover')
+    - attributes.class += ' cover '
+    - image = 'pictures/' + image
 
   section.slide&attributes(attributes)
     div
