@@ -15,12 +15,20 @@ mixin slide(image)
     - attributes.class = []
 
   if image
-    - attributes.class += ' cover '
-    - image = 'pictures/' + image
+    - var is_image = !!image.substr((~-image.lastIndexOf(".") >>> 0) + 2);
+    if is_image
+      - attributes.class += ' cover '
+      - image = 'pictures/' + image
 
   section.slide&attributes(attributes)
     div
       if image
-        img(src!=image)
+        if is_image
+          img(src!=image)
+        else
+          style.
+            ##{_slide_id_current} {
+              background-color: #{image};
+            }
 
       block
