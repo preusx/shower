@@ -1,0 +1,24 @@
+- var _slide_id_prefix = 'slide-'
+- var _slide_id_counter = 0
+- var _slide_id_current = ''
+
+
+mixin slide(image)
+  if !attributes.id
+    - _slide_id_counter += 1
+    - _slide_id_current = _slide_id_prefix + _slide_id_counter
+    - attributes.id = _slide_id_current
+  else
+    - _slide_id_current = attributes.id
+
+  if !attributes.class
+    - atrtibutes.class = []
+
+  if image
+    - attributes.class.push('cover')
+
+  section.slide
+    if image
+      img(src!=image)
+
+    block
