@@ -3,6 +3,43 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.initConfig({
+		jade: {
+			prepare: {
+				options: {
+					pretty: true,
+				},
+				files: {
+					'index.html': 'jade/index.jade',
+				},
+			}
+		},
+
+		inline: {
+			dist: {
+				options: {
+					tag: '',
+					cssmin: true,
+					uglify: true,
+				},
+				src: ['index.html'],
+			}
+		},
+
+		cssUrlEmbed: {
+			encode: {
+				expand: true,
+				src: ['index.html'],
+			}
+		},
+
+		// inlinecss: {
+		// 	main: {
+		// 		options: {
+		// 		},
+		// 		src: ['index.html'],
+		// 	}
+		// },
+
 		bump: {
 			options: {
 				files: ['package.json', 'bower.json'],
@@ -10,6 +47,7 @@ module.exports = function(grunt) {
 				pushTo: 'origin'
 			}
 		},
+
 		copy: {
 			prepare: {
 				files: [{
@@ -55,6 +93,7 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
+
 		replace: {
 			core: {
 				src: 'temp/pres/index.html',
@@ -75,6 +114,7 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
+
 		'gh-pages': {
 			options: {
 				base: 'temp/pres',
@@ -82,6 +122,7 @@ module.exports = function(grunt) {
 			},
 			src: ['**']
 		},
+
 		compress: {
 			shower: {
 				options: {
@@ -95,10 +136,28 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
-		clean: ['temp']
+
+		clean: ['temp'],
+
+		watch: {
+			jade: {
+				files: 'jade/**/*.jade',
+				tasks: ['jade:prepare'],
+				options: {
+					spawn: false,
+				},
+			},
+		},
 	});
 
+	grunt.registerTask('single', [
+		'jade',
+		'inline',
+		'cssUrlEmbed',
+	]);
+
 	grunt.registerTask('publish', [
+		'jade',
 		'copy',
 		'replace',
 		'gh-pages',
@@ -106,6 +165,7 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('archive', [
+		'jade',
 		'copy',
 		'replace',
 		'compress',

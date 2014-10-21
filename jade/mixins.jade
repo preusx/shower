@@ -6,19 +6,20 @@
 mixin slide(image)
   if !attributes.id
     - _slide_id_counter += 1
-    - _slide_id_current = _slide_id_prefix + _slide_id_counter
+    - _slide_id_current = _slide_id_prefix + _slide_id_counter.toString()
     - attributes.id = _slide_id_current
   else
     - _slide_id_current = attributes.id
 
   if !attributes.class
-    - atrtibutes.class = []
+    - attributes.class = []
 
   if image
     - attributes.class.push('cover')
 
-  section.slide
-    if image
-      img(src!=image)
+  section.slide&attributes(attributes)
+    div
+      if image
+        img(src!=image)
 
-    block
+      block
